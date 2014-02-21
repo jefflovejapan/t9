@@ -26,9 +26,9 @@ def find_prefix(letters, nums_to_process, prefixes):
 
 
 def main():
-    some_trie = Trie(['dog', 'cat'])
-    print prefixes
-    print some_trie.words_for_prefixes(prefixes)
+    some_trie = Trie(['do', 'dog', 'done'])
+    print some_trie.words_for_prefix('do')
+
 
 if __name__ == '__main__':
     main()

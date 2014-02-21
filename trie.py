@@ -15,14 +15,23 @@ class Trie(object):
 
     def add_word(self, word):
         temp = self.root
-        for char in word:
+        for i in xrange(len(word)):
             for child in temp.children:
-                if child.value == char:
+                if child.value == word[i]:
                     temp = child
+                    if i == len(word) - 1:
+                        print 'i got created'
+                        child.add_child('')
                     break
-            else:
-                temp = temp.addChild(char)
 
+            else:
+                temp = temp.add_child(word[i])
+
+                # Needs to be in both locations so it gets hit regardless
+                # of sorting
+                if i == len(word) - 1:
+                    print ('i got created down below')
+                    temp.add_child('')
 
     def words_for_prefix(self, prefix):
         if not isinstance(prefix, str):
@@ -43,7 +52,7 @@ class Trie(object):
         words = []
         for prefix in prefixes:
             words.extend(self.words_for_prefix(prefix))
-        return words 
+        return words
 
     def build_word(self, node, word_so_far, words):
         if node.children:
@@ -60,20 +69,7 @@ class Node(object):
         self.parent = parent
         self.children = []
 
-    def addChild(self, char):
+    def add_child(self, char):
         childNode = Node(char, self)
         self.children.append(childNode)
         return childNode
-
-
-def main():
-    some_trie = Trie(['dog', 'cat'])
-    assert(any(node.value == 'd') for node in some_trie.root.children)
-    assert(not any(node.value == 'n') for node in some_trie.root.children)
-    assert(some_trie.words_for_prefix('d') == ['dog'])
-    assert(some_trie.words_for_prefix('') == ['dog', 'cat'])
-    assert(some_trie.words_for_prefix('dog') == ['dog'])
-
-
-if __name__ == '__main__':
-    main()
